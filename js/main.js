@@ -51,13 +51,13 @@ contactUsBtns.forEach((element)=>{
 
 window.addEventListener('scroll', scrollOpenModal);
 
-const endDate = new Date(2021, 4, 10, 10, 0, 0);
+const endDate = new Date(2021, 2, 20, 0, 0, 0);
 const openModalTimer = setTimeout(openModal, 5000);
 
 const timeUpdaterInterval = setInterval(()=>{
     const currentDate = new Date();
     let difference = endDate - currentDate;
-    if (difference === 0)
+    if (difference <= 999)
         clearInterval(timeUpdaterInterval);
     const daysLeft = Math.floor(difference / (1000 * 60 * 60 * 24));
     const hoursLeft = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
