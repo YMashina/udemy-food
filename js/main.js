@@ -68,3 +68,46 @@ const timeUpdaterInterval = setInterval(()=>{
     document.getElementById('minutes').innerText = minutesLeft.toString();
     document.getElementById('seconds').innerText = secondsLeft.toString();
 }, 1000);
+
+const menuCardsContainer = document.getElementById('menuCardsContainer');
+
+class menuCard {
+    constructor(image, name, description, price) {
+        this.image = image;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+    }
+
+    render () {
+        const menuCardElement = document.createElement('div');
+        menuCardElement.classList.add('menu__item');
+        menuCardElement.innerHTML = `<img src="${this.image}">
+                    <h3 class="menu__item-subtitle">Меню "${this.name}"</h3>
+                    <div class="menu__item-descr">${this.description}</div>
+                    <div class="menu__item-divider"></div>
+                    <div class="menu__item-price">
+                        <div class="menu__item-cost">Цена:</div>
+                        <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
+                    </div>`
+        menuCardsContainer.append(menuCardElement);
+    }
+}
+
+const fitnessMenuCard = new menuCard(
+    'img/tabs/vegy.jpg',
+    'Фитнес',
+    'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
+    229 ).render();
+
+const eliteMenuCard = new menuCard(
+    'img/tabs/elite.jpg',
+    'Премиум',
+    'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
+    550 ).render();
+
+const vegetarianMenuCard = new menuCard(
+    'img/tabs/post.jpg',
+    'Постное',
+    'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
+    430 ).render();
