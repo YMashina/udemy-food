@@ -673,7 +673,7 @@ a {
     border: 1px solid rgba(0, 0, 0, .2);
     border-radius: 4px;
     max-height: 80vh;
-    overflow-y: auto
+    overflow-y: auto;
 }
 
 .modal__close {
@@ -717,4 +717,9 @@ a {
 
 .not_displayed {
     display: none;
+}
+
+.status {
+    display: block;
+    margin: 0 auto;
 }

@@ -111,3 +111,75 @@ const vegetarianMenuCard = new menuCard(
     'Постное',
     'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
     430 ).render();
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === "Escape") {
+        document.querySelector('.modal').style.display = 'none';
+    }
+});
+
+// Forms
+
+const forms = document.querySelectorAll('form');
+const message = {
+    loading: 'img/spinner.svg',
+    success: 'Спасибо! Скоро мы с вами свяжемся',
+    failure: 'Что-то пошло не так...'
+};
+
+forms.forEach(item => {
+    postData(item);
+});
+
+function postData(form) {
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        let statusMessage = document.createElement('img');
+        statusMessage.classList.add('status');
+        statusMessage.src = message.loading;
+        form.appendChild(statusMessage);
+
+        const request = new XMLHttpRequest();
+        request.open('POST', 'server.php');
+        request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+        const formData = new FormData(form);
+
+        const object = {};
+        formData.forEach(function(value, key){
+            object[key] = value;
+        });
+        const json = JSON.stringify(object);
+
+        request.send(json);
+
+        let thanksDiv = document.createElement('div');
+        thanksDiv.classList.add('modal__title');
+        let modalClose = document.createElement('div');
+        modalClose.classList.add('modal__close');
+        modalClose.innerText = '×';
+
+        const formCall = document.getElementById('formCall');
+
+        request.addEventListener('load', () => {
+            let modalContent = document.querySelector(".modal__content");
+            formCall.classList.add('not_displayed');
+            if (request.status === 200) {
+                console.log(request.response);
+                thanksDiv.innerText = message.success;
+                console.log(statusMessage.innerText);
+                form.reset();
+                setTimeout(() => {
+                    statusMessage.remove();
+                }, 5000);
+            } else {
+                thanksDiv.innerText = message.failure;
+            }
+            modalContent.append(modalClose);
+            modalContent.append(thanksDiv);
+        });
+    });
+}
+
+
+
