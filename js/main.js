@@ -123,8 +123,8 @@ document.addEventListener('click',(event)=>{
         document.querySelector('#formCall').reset();
         formCall.classList.remove('not_displayed');
         document.querySelector('.modal').style.display = 'none';
-        if (document.querySelector('.thanks')) remove();
-        if (document.querySelector('.status')) remove();
+        if (document.querySelector('.thanks')) document.querySelector('.thanks').remove();
+        if (document.querySelector('.status')) document.querySelector('.status').remove();
     }
 
 });
