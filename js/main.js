@@ -83,7 +83,7 @@ class menuCard {
         const menuCardElement = document.createElement('div');
         menuCardElement.classList.add('menu__item');
         menuCardElement.innerHTML = `<img src="${this.image}">
-                    <h3 class="menu__item-subtitle">Меню "${this.name}"</h3>
+                    <h3 class="menu__item-subtitle">${this.name}</h3>
                     <div class="menu__item-descr">${this.description}</div>
                     <div class="menu__item-divider"></div>
                     <div class="menu__item-price">
@@ -94,28 +94,45 @@ class menuCard {
     }
 }
 
-const fitnessMenuCard = new menuCard(
-    'img/tabs/vegy.jpg',
-    'Фитнес',
-    'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
-    229 ).render();
+const createMenuCard = (menuObj, cardName) => {
+    let menuObjItem = menuObj.filter((item)=> { return item.title.includes(cardName);})[0];
+    const menuCardElement = new menuCard(
+        menuObjItem.img,
+        menuObjItem.title,
+        menuObjItem.descr,
+        menuObjItem.price ).render();
+};
 
-const eliteMenuCard = new menuCard(
-    'img/tabs/elite.jpg',
-    'Премиум',
-    'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
-    550 ).render();
+let menuObj;
 
-const vegetarianMenuCard = new menuCard(
-    'img/tabs/post.jpg',
-    'Постное',
-    'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
-    430 ).render();
+fetch('http://localhost:3000/menu', {
+    method: 'GET'
+})
+.then(response => {
+    return response.json()
+})
+.then(data => {
+    menuObj = data;
+    createMenuCard(menuObj, 'Фитнес');
+    createMenuCard(menuObj, 'Премиум');
+    createMenuCard(menuObj, 'Постное');
+});
 
 document.addEventListener('keydown', (event) => {
     if (event.key === "Escape") {
         document.querySelector('.modal').style.display = 'none';
     }
+});
+
+document.addEventListener('click',(event)=>{
+    if (event.target.classList.contains('modal__close')){
+        document.querySelector('#formCall').reset();
+        formCall.classList.remove('not_displayed');
+        document.querySelector('.modal').style.display = 'none';
+        document.querySelector('.thanks').remove();
+        document.querySelector('.status').remove();
+    }
+
 });
 
 // Forms
@@ -131,8 +148,20 @@ forms.forEach(item => {
     postData(item);
 });
 
+const fetchPostData = async (url, objectData) => {
+  const response = await fetch (url, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(objectData)
+  });
+  return await response;
+};
+
 function postData(form) {
     form.addEventListener('submit', (e) => {
+
         e.preventDefault();
 
         let loadingSpinner = document.createElement('img');
@@ -142,29 +171,19 @@ function postData(form) {
 
         let thanksDiv = document.createElement('div');
         thanksDiv.classList.add('modal__title');
+        thanksDiv.classList.add('thanks');
         let modalClose = document.createElement('div');
         modalClose.classList.add('modal__close');
         modalClose.innerText = '×';
 
         const formData = new FormData(form);
-
-        const object = {};
-        formData.forEach(function(value, key){
-            object[key] = value;
-        });
-        console.log(object);
+        const object = Object.fromEntries(formData.entries());
 
         let modalContent = document.querySelector(".modal__content");
-        fetch('server.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(object)
-        })
+        fetchPostData('http://localhost:3000/requests', object)
             .then((response) => {
             console.log(response);
-            if (response.status === 200) {
+            if (response.status >= 200 && response.status < 300) {
                 thanksDiv.innerText = message.success;
                 form.reset();
                 setTimeout(() => {
@@ -174,22 +193,18 @@ function postData(form) {
                 thanksDiv.innerText = message.failure;
             }
             return response.json();
-
         })
             .then(data => {
-                console.log(data);
-
                 formCall.classList.add('not_displayed');
-
                 modalContent.append(thanksDiv);
             })
             .catch((error) => {
                 console.log('An error occurred:');
                 console.log(error);
-            }).finally(()=> {
+            })
+            .finally(()=> {
             modalContent.append(modalClose);
         });
-
         const formCall = document.getElementById('formCall');
     });
 }
