@@ -135,23 +135,10 @@ function postData(form) {
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        let statusMessage = document.createElement('img');
-        statusMessage.classList.add('status');
-        statusMessage.src = message.loading;
-        form.appendChild(statusMessage);
-
-        const request = new XMLHttpRequest();
-        request.open('POST', 'server.php');
-        request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-        const formData = new FormData(form);
-
-        const object = {};
-        formData.forEach(function(value, key){
-            object[key] = value;
-        });
-        const json = JSON.stringify(object);
-
-        request.send(json);
+        let loadingSpinner = document.createElement('img');
+        loadingSpinner.classList.add('status');
+        loadingSpinner.src = message.loading;
+        form.appendChild(loadingSpinner);
 
         let thanksDiv = document.createElement('div');
         thanksDiv.classList.add('modal__title');
@@ -159,25 +146,51 @@ function postData(form) {
         modalClose.classList.add('modal__close');
         modalClose.innerText = '×';
 
-        const formCall = document.getElementById('formCall');
+        const formData = new FormData(form);
 
-        request.addEventListener('load', () => {
-            let modalContent = document.querySelector(".modal__content");
-            formCall.classList.add('not_displayed');
-            if (request.status === 200) {
-                console.log(request.response);
+        const object = {};
+        formData.forEach(function(value, key){
+            object[key] = value;
+        });
+        console.log(object);
+
+        let modalContent = document.querySelector(".modal__content");
+        fetch('server.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(object)
+        })
+            .then((response) => {
+            console.log(response);
+            if (response.status === 200) {
                 thanksDiv.innerText = message.success;
-                console.log(statusMessage.innerText);
                 form.reset();
                 setTimeout(() => {
-                    statusMessage.remove();
+                    loadingSpinner.remove();
                 }, 5000);
             } else {
                 thanksDiv.innerText = message.failure;
             }
+            return response.json();
+
+        })
+            .then(data => {
+                console.log(data);
+
+                formCall.classList.add('not_displayed');
+
+                modalContent.append(thanksDiv);
+            })
+            .catch((error) => {
+                console.log('An error occurred:');
+                console.log(error);
+            }).finally(()=> {
             modalContent.append(modalClose);
-            modalContent.append(thanksDiv);
         });
+
+        const formCall = document.getElementById('formCall');
     });
 }
 
