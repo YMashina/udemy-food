@@ -8,9 +8,7 @@ tabs = {
 };
 tabItems.forEach((tabItem)=>{
     tabItem.addEventListener('click',(event)=>{
-        console.log(event.target.classList);
         event.target.classList.add('tabheader__item_active');
-        console.log(event.target.classList);
         tabItems.forEach((element) => {
             if (element !== event.target && element.classList.contains('tabheader__item_active'))
                 element.classList.remove('tabheader__item_active');
@@ -95,7 +93,6 @@ class menuCard {
 }
 
 const createMenuCards = (data) => {
-    console.log(data);
     data.forEach(({img, title, descr, price})=>{
         new menuCard(img, title, descr, price).render();
     });
@@ -111,7 +108,6 @@ fetch('http://localhost:3000/menu', {
 })
 .then(data => {
     menuObj = data;
-    console.log(data)
     createMenuCards(data);
 })
 .catch(e => console.log(e));
