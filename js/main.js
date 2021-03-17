@@ -94,13 +94,11 @@ class menuCard {
     }
 }
 
-const createMenuCard = (menuObj, cardName) => {
-    let menuObjItem = menuObj.filter((item)=> { return item.title.includes(cardName);})[0];
-    const menuCardElement = new menuCard(
-        menuObjItem.img,
-        menuObjItem.title,
-        menuObjItem.descr,
-        menuObjItem.price ).render();
+const createMenuCards = (data) => {
+    console.log(data);
+    data.forEach(({img, title, descr, price})=>{
+        new menuCard(img, title, descr, price).render();
+    });
 };
 
 let menuObj;
@@ -113,10 +111,10 @@ fetch('http://localhost:3000/menu', {
 })
 .then(data => {
     menuObj = data;
-    createMenuCard(menuObj, 'Фитнес');
-    createMenuCard(menuObj, 'Премиум');
-    createMenuCard(menuObj, 'Постное');
-});
+    console.log(data)
+    createMenuCards(data);
+})
+.catch(e => console.log(e));
 
 document.addEventListener('keydown', (event) => {
     if (event.key === "Escape") {
@@ -129,8 +127,8 @@ document.addEventListener('click',(event)=>{
         document.querySelector('#formCall').reset();
         formCall.classList.remove('not_displayed');
         document.querySelector('.modal').style.display = 'none';
-        document.querySelector('.thanks').remove();
-        document.querySelector('.status').remove();
+        if (document.querySelector('.thanks')) remove();
+        if (document.querySelector('.status')) remove();
     }
 
 });
