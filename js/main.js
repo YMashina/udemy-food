@@ -153,7 +153,7 @@ const fetchPostData = async (url, objectData) => {
   return await response;
 };
 
-function postData(form) {
+function postData (form) {
     form.addEventListener('submit', (e) => {
 
         e.preventDefault();
@@ -203,5 +203,43 @@ function postData(form) {
     });
 }
 
+const numberTo0x = (number) => {
+    return (number < 10 ? '0' : '') + number;
+};
 
+fetch('http://localhost:3000/slides', {
+    method: 'GET'
+})
+    .then(response => {
+        return response.json()
+    })
+    .then(data => {
+        console.log(data)
+        sliderFunction(data);
+    })
+    .catch(e => console.log(e));
+
+const sliderFunction = (slides) => {
+    document.querySelector('#sliderImage').src = slides.src[slides.currentSlider];
+    document.querySelector('#current').innerText = numberTo0x(Number(slides.currentSlider) + 1);
+    document.querySelector('#total').innerText = numberTo0x(slides.src.length);
+
+    document.querySelector('.offer__slider-next').addEventListener('click', (event) => {
+        if (slides.currentSlider >= slides.src.length - 1)
+            slides.currentSlider = 0;
+        else
+            slides.currentSlider++;
+        document.querySelector('#current').innerText = numberTo0x(slides.currentSlider + 1);
+        document.querySelector('#sliderImage').src = slides.src[slides.currentSlider];
+    });
+
+    document.querySelector('.offer__slider-prev').addEventListener('click',(event) => {
+        if (slides.currentSlider <= 0)
+            slides.currentSlider = slides.src.length - 1;
+        else
+            slides.currentSlider--;
+        document.querySelector('#current').innerText = numberTo0x(slides.currentSlider + 1);
+        document.querySelector('#sliderImage').src = slides.src[slides.currentSlider];
+    });
+};
 

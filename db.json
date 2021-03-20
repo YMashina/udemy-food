@@ -37,6 +37,21 @@
       "name": "123",
       "phone": "321",
       "id": 3
+    },
+    {
+      "name": "1",
+      "phone": "2",
+      "id": 4
     }
-  ]
+  ],
+  "slides": {
+    "currentSlider": "0",
+    "src" :
+    [
+      "img/slider/pepper.jpg",
+      "img/slider/olive-oil.jpg",
+      "img/slider/paprika.jpg",
+      "img/slider/food-12.jpg"
+    ]
+  }
 }
