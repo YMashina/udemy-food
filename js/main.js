@@ -266,8 +266,8 @@ const sliderCarouselFunction = (slides) => {
     nextSliderDiv.addEventListener('click',  (event) => {
         current = document.querySelector('.currentSlide');
         next = document.querySelector('.nextSlide');
-        next.classList.remove('slideInRight', 'slideOutRight');
-        current.classList.remove('slideInRight', 'slideOutRight' );
+        next.classList.remove('slideInLeft', 'slideOutLeft','slideInRight', 'slideOutRight');
+        current.classList.remove('slideInLeft', 'slideOutLeft','slideInRight', 'slideOutRight' );
 
         if (slides.currentSlider >= slides.src.length - 1)
             slides.currentSlider = 0;
@@ -289,8 +289,8 @@ const sliderCarouselFunction = (slides) => {
     prevSliderDiv.addEventListener('click',(event) => {
         current = document.querySelector('.currentSlide');
         next = document.querySelector('.nextSlide');
-        next.classList.remove('slideInLeft', 'slideOutLeft');
-        current.classList.remove('slideInLeft', 'slideOutLeft' );
+        next.classList.remove('slideInLeft', 'slideOutLeft','slideInRight', 'slideOutRight');
+        current.classList.remove('slideInLeft', 'slideOutLeft','slideInRight', 'slideOutRight' );
 
         if (slides.currentSlider <= 0)
             slides.currentSlider = slides.src.length - 1;
