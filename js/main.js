@@ -50,7 +50,7 @@ contactUsBtns.forEach((element)=>{
 window.addEventListener('scroll', scrollOpenModal);
 
 const endDate = new Date(2021, 2, 20, 0, 0, 0);
-const openModalTimer = setTimeout(openModal, 5000);
+//const openModalTimer = setTimeout(openModal, 5000);
 
 const timeUpdaterInterval = setInterval(()=>{
     const currentDate = new Date();
@@ -214,17 +214,19 @@ fetch('http://localhost:3000/slides', {
         return response.json()
     })
     .then(data => {
-        console.log(data)
-        sliderFunction(data);
+        sliderCarouselFunction(data);
     })
     .catch(e => console.log(e));
 
-const sliderFunction = (slides) => {
+const nextSliderDiv = document.querySelector('.offer__slider-next');
+const prevSliderDiv = document.querySelector('.offer__slider-prev');
+
+/*const sliderFunction = (slides) => {
     document.querySelector('#sliderImage').src = slides.src[slides.currentSlider];
     document.querySelector('#current').innerText = numberTo0x(Number(slides.currentSlider) + 1);
     document.querySelector('#total').innerText = numberTo0x(slides.src.length);
 
-    document.querySelector('.offer__slider-next').addEventListener('click', (event) => {
+    nextSliderDiv.addEventListener('click', (event) => {
         if (slides.currentSlider >= slides.src.length - 1)
             slides.currentSlider = 0;
         else
@@ -233,7 +235,7 @@ const sliderFunction = (slides) => {
         document.querySelector('#sliderImage').src = slides.src[slides.currentSlider];
     });
 
-    document.querySelector('.offer__slider-prev').addEventListener('click',(event) => {
+    prevSliderDiv.addEventListener('click',(event) => {
         if (slides.currentSlider <= 0)
             slides.currentSlider = slides.src.length - 1;
         else
@@ -241,5 +243,69 @@ const sliderFunction = (slides) => {
         document.querySelector('#current').innerText = numberTo0x(slides.currentSlider + 1);
         document.querySelector('#sliderImage').src = slides.src[slides.currentSlider];
     });
-};
+};*/
 
+const slidesWrapper = document.querySelector('.offer__slider-wrapper');
+slidesWrapper.style.display = 'flex';
+const slideDiv = document.querySelector('.offer__slide');
+slideDiv.style.display = 'flex';
+slidesWrapper.style.overflow = 'hidden';
+
+const slideWidth = slidesWrapper.clientWidth;
+
+const sliderCarouselFunction = (slides) => {
+    let current = document.querySelector('.currentSlide');
+    current.src = slides.src[0];
+    document.querySelector('#current').innerText = numberTo0x(Number(slides.currentSlider) + 1);
+    document.querySelector('#total').innerText = numberTo0x(slides.src.length);
+
+    let next = document.querySelector('.nextSlide');
+    next.querySelector('img').src = slides.src[1];
+    slidesWrapper.append(next);
+
+    nextSliderDiv.addEventListener('click',  (event) => {
+        current = document.querySelector('.currentSlide');
+        next = document.querySelector('.nextSlide');
+        next.classList.remove('slideInRight', 'slideOutRight');
+        current.classList.remove('slideInRight', 'slideOutRight' );
+
+        if (slides.currentSlider >= slides.src.length - 1)
+            slides.currentSlider = 0;
+        else
+            slides.currentSlider++;
+
+        next.querySelector('img').src = slides.src[slides.currentSlider];
+        next.classList.add('slideInRight');
+        current.classList.add('slideOutRight');
+
+        next.classList.add('currentSlide');
+        next.classList.remove('nextSlide');
+        current.classList.remove('currentSlide');
+        current.classList.add('nextSlide');
+
+        document.querySelector('#current').innerText = numberTo0x(slides.currentSlider + 1);
+    });
+
+    prevSliderDiv.addEventListener('click',(event) => {
+        current = document.querySelector('.currentSlide');
+        next = document.querySelector('.nextSlide');
+        next.classList.remove('slideInLeft', 'slideOutLeft');
+        current.classList.remove('slideInLeft', 'slideOutLeft' );
+
+        if (slides.currentSlider <= 0)
+            slides.currentSlider = slides.src.length - 1;
+        else
+            slides.currentSlider--;
+
+        next.querySelector('img').src = slides.src[slides.currentSlider];
+        next.classList.add('slideInLeft');
+        current.classList.add('slideOutLeft');
+
+        next.classList.add('currentSlide');
+        next.classList.remove('nextSlide');
+        current.classList.remove('currentSlide');
+        current.classList.add('nextSlide');
+
+        document.querySelector('#current').innerText = numberTo0x(slides.currentSlider + 1);
+    });
+};
