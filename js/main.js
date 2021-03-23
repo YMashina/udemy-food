@@ -221,30 +221,6 @@ fetch('http://localhost:3000/slides', {
 const nextSliderDiv = document.querySelector('.offer__slider-next');
 const prevSliderDiv = document.querySelector('.offer__slider-prev');
 
-/*const sliderFunction = (slides) => {
-    document.querySelector('#sliderImage').src = slides.src[slides.currentSlider];
-    document.querySelector('#current').innerText = numberTo0x(Number(slides.currentSlider) + 1);
-    document.querySelector('#total').innerText = numberTo0x(slides.src.length);
-
-    nextSliderDiv.addEventListener('click', (event) => {
-        if (slides.currentSlider >= slides.src.length - 1)
-            slides.currentSlider = 0;
-        else
-            slides.currentSlider++;
-        document.querySelector('#current').innerText = numberTo0x(slides.currentSlider + 1);
-        document.querySelector('#sliderImage').src = slides.src[slides.currentSlider];
-    });
-
-    prevSliderDiv.addEventListener('click',(event) => {
-        if (slides.currentSlider <= 0)
-            slides.currentSlider = slides.src.length - 1;
-        else
-            slides.currentSlider--;
-        document.querySelector('#current').innerText = numberTo0x(slides.currentSlider + 1);
-        document.querySelector('#sliderImage').src = slides.src[slides.currentSlider];
-    });
-};*/
-
 const slidesWrapper = document.querySelector('.offer__slider-wrapper');
 slidesWrapper.style.display = 'flex';
 const slideDiv = document.querySelector('.offer__slide');
@@ -263,7 +239,7 @@ const sliderCarouselFunction = (slides) => {
     next.querySelector('img').src = slides.src[1];
     slidesWrapper.append(next);
 
-    nextSliderDiv.addEventListener('click',  (event) => {
+    const nextSliderEvent = nextSliderDiv.addEventListener('click',  (event) => {
         current = document.querySelector('.currentSlide');
         next = document.querySelector('.nextSlide');
         next.classList.remove('slideInLeft', 'slideOutLeft','slideInRight', 'slideOutRight');
@@ -286,7 +262,7 @@ const sliderCarouselFunction = (slides) => {
         document.querySelector('#current').innerText = numberTo0x(slides.currentSlider + 1);
     });
 
-    prevSliderDiv.addEventListener('click',(event) => {
+    const prevSliderEvent = prevSliderDiv.addEventListener('click',(event) => {
         current = document.querySelector('.currentSlide');
         next = document.querySelector('.nextSlide');
         next.classList.remove('slideInLeft', 'slideOutLeft','slideInRight', 'slideOutRight');
@@ -308,4 +284,37 @@ const sliderCarouselFunction = (slides) => {
 
         document.querySelector('#current').innerText = numberTo0x(slides.currentSlider + 1);
     });
+
+    const goToSlide = (button, index, callback) => {
+        button.click();
+        setTimeout(()=>{
+            if(index!== slides.currentSlider)
+            callback(button, index, callback);
+        }, 0);
+    };
+
+    console.log(slides)
+    const slidesNavigation = document.createElement('ul');
+    slidesNavigation.classList.add('carousel-indicators');
+    slides.src.forEach((element, index) => {
+        const slidesNavigationElement = document.createElement('li');
+        slidesNavigationElement.classList.add('dot');
+        slidesNavigationElement.setAttribute('data-slide-to', index);
+        slidesNavigationElement.addEventListener("click", (event) => {
+            for (let each of slidesNavigation.children){
+                each.style.opacity = '0.5';
+            }
+            slidesNavigationElement.style.opacity = '0.8';
+            if (slides.currentSlider > index){
+                goToSlide(prevSliderDiv, index, goToSlide);
+            }else if (slides.currentSlider < index) {
+                goToSlide(nextSliderDiv, index, goToSlide);
+            }
+        });
+        slidesNavigation.append(slidesNavigationElement);
+    });
+
+    slidesWrapper.append(slidesNavigation);
+
 };
+
