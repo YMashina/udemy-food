@@ -227,17 +227,13 @@ const slideDiv = document.querySelector('.offer__slide');
 slideDiv.style.display = 'flex';
 slidesWrapper.style.overflow = 'hidden';
 
-const slideWidth = slidesWrapper.clientWidth;
-
 const sliderCarouselFunction = (slides) => {
-
     const slidesNavigation = document.createElement('ul');
     let slidesNavigationListItems = [];
     slidesNavigation.classList.add('carousel-indicators');
     slides.src.forEach((element, index) => {
         const slidesNavigationElement = document.createElement('li');
         slidesNavigationElement.classList.add('dot');
-        slidesNavigationElement.setAttribute('data-slide-to', index);
         slidesNavigationElement.addEventListener("click", (event) => {
             slidesNavigationListItems.forEach((item, index)=>{
                 item.style.opacity = '0.5';
@@ -258,19 +254,12 @@ const sliderCarouselFunction = (slides) => {
     current.src = slides.src[0];
     document.querySelector('#current').innerText = numberTo0x(Number(slides.currentSlider) + 1);
     document.querySelector('#total').innerText = numberTo0x(slides.src.length);
-
     let next = document.querySelector('.nextSlide');
     next.querySelector('img').src = slides.src[1];
     slidesWrapper.append(next);
-
     slidesNavigationListItems[0].style.opacity = '0.8';
 
-
-
     nextSliderDiv.addEventListener('click',  (event) => {
-
-
-
         current = document.querySelector('.currentSlide');
         next = document.querySelector('.nextSlide');
         next.classList.remove('slideInLeft', 'slideOutLeft','slideInRight', 'slideOutRight');
@@ -300,11 +289,6 @@ const sliderCarouselFunction = (slides) => {
     });
 
     prevSliderDiv.addEventListener('click',(event) => {
-        /*slidesNavigationListItems.forEach((item, index)=>{
-            item.style.opacity = '0.5';
-            if (index === slides.currentSlider)
-                item.style.opacity = '0.8';
-        });*/
         current = document.querySelector('.currentSlide');
         next = document.querySelector('.nextSlide');
         next.classList.remove('slideInLeft', 'slideOutLeft','slideInRight', 'slideOutRight');
@@ -340,9 +324,5 @@ const sliderCarouselFunction = (slides) => {
             callback(button, index, callback);
         }, 0);
     };
-
-    console.log(slides)
-
-
 };
 
