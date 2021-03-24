@@ -230,6 +230,30 @@ slidesWrapper.style.overflow = 'hidden';
 const slideWidth = slidesWrapper.clientWidth;
 
 const sliderCarouselFunction = (slides) => {
+
+    const slidesNavigation = document.createElement('ul');
+    let slidesNavigationListItems = [];
+    slidesNavigation.classList.add('carousel-indicators');
+    slides.src.forEach((element, index) => {
+        const slidesNavigationElement = document.createElement('li');
+        slidesNavigationElement.classList.add('dot');
+        slidesNavigationElement.setAttribute('data-slide-to', index);
+        slidesNavigationElement.addEventListener("click", (event) => {
+            slidesNavigationListItems.forEach((item, index)=>{
+                item.style.opacity = '0.5';
+            });
+            slidesNavigationElement.style.opacity = '0.8';
+            if (slides.currentSlider > index){
+                goToSlide(prevSliderDiv, index, goToSlide);
+            }else if (slides.currentSlider < index) {
+                goToSlide(nextSliderDiv, index, goToSlide);
+            }
+        });
+        slidesNavigationListItems.push(slidesNavigationElement);
+        slidesNavigation.append(slidesNavigationElement);
+    });
+    slidesWrapper.append(slidesNavigation);
+
     let current = document.querySelector('.currentSlide');
     current.src = slides.src[0];
     document.querySelector('#current').innerText = numberTo0x(Number(slides.currentSlider) + 1);
@@ -239,7 +263,14 @@ const sliderCarouselFunction = (slides) => {
     next.querySelector('img').src = slides.src[1];
     slidesWrapper.append(next);
 
-    const nextSliderEvent = nextSliderDiv.addEventListener('click',  (event) => {
+    slidesNavigationListItems[0].style.opacity = '0.8';
+
+
+
+    nextSliderDiv.addEventListener('click',  (event) => {
+
+
+
         current = document.querySelector('.currentSlide');
         next = document.querySelector('.nextSlide');
         next.classList.remove('slideInLeft', 'slideOutLeft','slideInRight', 'slideOutRight');
@@ -249,6 +280,12 @@ const sliderCarouselFunction = (slides) => {
             slides.currentSlider = 0;
         else
             slides.currentSlider++;
+
+        slidesNavigationListItems.forEach((item, index)=>{
+            item.style.opacity = '0.5';
+            if (index === slides.currentSlider)
+                item.style.opacity = '0.8';
+        });
 
         next.querySelector('img').src = slides.src[slides.currentSlider];
         next.classList.add('slideInRight');
@@ -262,7 +299,12 @@ const sliderCarouselFunction = (slides) => {
         document.querySelector('#current').innerText = numberTo0x(slides.currentSlider + 1);
     });
 
-    const prevSliderEvent = prevSliderDiv.addEventListener('click',(event) => {
+    prevSliderDiv.addEventListener('click',(event) => {
+        /*slidesNavigationListItems.forEach((item, index)=>{
+            item.style.opacity = '0.5';
+            if (index === slides.currentSlider)
+                item.style.opacity = '0.8';
+        });*/
         current = document.querySelector('.currentSlide');
         next = document.querySelector('.nextSlide');
         next.classList.remove('slideInLeft', 'slideOutLeft','slideInRight', 'slideOutRight');
@@ -272,6 +314,12 @@ const sliderCarouselFunction = (slides) => {
             slides.currentSlider = slides.src.length - 1;
         else
             slides.currentSlider--;
+
+        slidesNavigationListItems.forEach((item, index)=>{
+            item.style.opacity = '0.5';
+            if (index === slides.currentSlider)
+                item.style.opacity = '0.8';
+        });
 
         next.querySelector('img').src = slides.src[slides.currentSlider];
         next.classList.add('slideInLeft');
@@ -294,27 +342,7 @@ const sliderCarouselFunction = (slides) => {
     };
 
     console.log(slides)
-    const slidesNavigation = document.createElement('ul');
-    slidesNavigation.classList.add('carousel-indicators');
-    slides.src.forEach((element, index) => {
-        const slidesNavigationElement = document.createElement('li');
-        slidesNavigationElement.classList.add('dot');
-        slidesNavigationElement.setAttribute('data-slide-to', index);
-        slidesNavigationElement.addEventListener("click", (event) => {
-            for (let each of slidesNavigation.children){
-                each.style.opacity = '0.5';
-            }
-            slidesNavigationElement.style.opacity = '0.8';
-            if (slides.currentSlider > index){
-                goToSlide(prevSliderDiv, index, goToSlide);
-            }else if (slides.currentSlider < index) {
-                goToSlide(nextSliderDiv, index, goToSlide);
-            }
-        });
-        slidesNavigation.append(slidesNavigationElement);
-    });
 
-    slidesWrapper.append(slidesNavigation);
 
 };
 
