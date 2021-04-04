@@ -301,7 +301,9 @@ a {
     margin-top: 50px;
     display: flex;
     flex-direction: column;
-    align-items: flex-end
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.7s;
 }
 
 .offer__slider-counter {
@@ -315,7 +317,13 @@ a {
 .offer__slider-wrapper {
     width: 100%;
     margin-top: 15px;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, .25)
+    box-shadow: 0 4px 30px rgba(0, 0, 0, .25);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 390px;
+    transition: transform 0.7s;
+    position: relative;
 }
 
 .offer__slider-prev {
@@ -336,13 +344,66 @@ a {
 
 .offer__slide {
     width: 100%;
-    height: 390px
+    /*height: 390px;*/
+    display: flex;
+    min-width: 100%;
+    position: absolute;
+    height: 100%;
+    object-fit: cover;
+    /*transition: transform 0.5s;*/
+}
+
+.just__slide {
+    min-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nextSlide{
+    left: 650px;
+}
+
+.slideInRight{
+    animation: slideInRightAnimation 0.7s;
+}
+
+.slideOutRight{
+    animation: slideOutRightAnimation 0.7s;
+}
+
+@keyframes slideInRightAnimation{
+    0% { left: 650px; }
+    100% { left: 0px; }
+}
+
+@keyframes slideOutRightAnimation{
+    0% { left: 0px; }
+    100% { left: -650px; }
+}
+
+.slideInLeft{
+    animation: slideInLeftAnimation 0.7s;
+}
+
+.slideOutLeft{
+    animation: slideOutLeftAnimation 0.7s;
+}
+
+@keyframes slideInLeftAnimation{
+    0% { left: -650px; }
+    100% { left: 0px; }
+}
+
+@keyframes slideOutLeftAnimation{
+    0% { left: 0px; }
+    100% { left: 650px; }
 }
 
 .offer__slide img {
     width: 100%;
     height: 100%;
-    object-fit: cover
+    object-fit: cover;
 }
 
 .calculating {
@@ -723,3 +784,36 @@ a {
     display: block;
     margin: 0 auto;
 }
+.offer__slide img{
+    height: 100%;
+}
+
+.carousel-indicators {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 15;
+    display: flex;
+    justify-content: center;
+    margin-right: 15%;
+    margin-left: 15%;
+    list-style: none;
+}
+
+.dot {
+    box-sizing: content-box;
+    flex: 0 1 auto;
+    width: 30px;
+    height: 6px;
+    margin-right: 3px;
+    margin-left: 3px;
+    cursor: pointer;
+    background-color: #fff;
+    background-clip: padding-box;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    opacity: .5;
+    transition: opacity .6s ease;
+}
+
