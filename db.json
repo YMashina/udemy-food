@@ -42,12 +42,16 @@
       "name": "1",
       "phone": "2",
       "id": 4
+    },
+    {
+      "name": "1331",
+      "phone": "5",
+      "id": 5
     }
   ],
   "slides": {
     "currentSlider": "0",
-    "src" :
-    [
+    "src": [
       "img/slider/pepper.jpg",
       "img/slider/olive-oil.jpg",
       "img/slider/paprika.jpg",
