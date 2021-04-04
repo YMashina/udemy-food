@@ -280,51 +280,59 @@ const sliderCarouselFunction = (slides) => {
     slideDiv.style.transform = `translateX(${-slideWidth * index}px)`;
 
     slideDiv.addEventListener('transitionend', () => {
-        console.log('transirionend: '+ index)
+        console.log('transitionend on index = '+ index)
         slideDiv = document.querySelector('.offer__slide');
-        slideDiv.style.transition = 'none'
-        if (index === 0){
-            slideDiv.style.transform = `translateX(${-slideWidth * 1}px)`;
-            console.log('index = ' + index)
-            index = slides.src.length - 1;
-        }
-        if (index === slides.src.length){
-            slideDiv.style.transform = `translateX(${-slideWidth * slides.src.length}px)`;
-            console.log('index = ' + index)
+
+        if (index > slides.src.length ){
+            slideDiv.style.transition = 'none'
+            console.log('index is bigger than '+slides.src.length+ ', moving to beginning, setting index = 1')
+            slideDiv.style.transform = `translateX(${-slideWidth}px)`;
             index = 1;
         }
+        if (index <= 0 ){
+            slideDiv.style.transition = 'none'
+            console.log('index is less than '+0+ ', moving to end, setting index = '+slides.src.length)
+            slideDiv.style.transform = `translateX(${-slideWidth * slides.src.length}px)`;
+            index = slides.src.length;
+        }
+
+        currentSlideNumber.innerText = numberTo0x(index);
     });
 
     nextSliderDiv.addEventListener('click',  (event) => {
         slideDiv = document.querySelector('.offer__slide');
+        if (index > slides.src.length ) return;
         index++;
-        console.log(index)
+        console.log('click towards index '+index)
         if (index > slides.src.length){
             slideDiv.style.transition = '0.5s'
             slideDiv.style.transform = `translateX(${-slideWidth * index}px)`;
-            //index = 1;
+            highlightSliderDot(0);
         } else {
             slideDiv.style.transition = '0.5s'
             slideDiv.style.transform = `translateX(${-slideWidth * index}px)`;
+            currentSlideNumber.innerText = numberTo0x(index);
+            highlightSliderDot(index - 1);
         }
-        currentSlideNumber.innerText = numberTo0x(index);
-        highlightSliderDot(index - 1);
+
+
     });
 
     prevSliderDiv.addEventListener('click',(event) => {
         slideDiv = document.querySelector('.offer__slide');
+        if (index < 1 ) return;
         index--;
         console.log(index)
         if (index < 1){
             slideDiv.style.transition = '0.5s'
             slideDiv.style.transform = `translateX(${-slideWidth * index}px)`;
-            //index = slides.src.length - 1;
+            highlightSliderDot(slides.src.length - 1);
         }else{
             slideDiv.style.transition = '0.5s'
             slideDiv.style.transform = `translateX(${-slideWidth * index}px)`;
+            currentSlideNumber.innerText = numberTo0x(index);
+            highlightSliderDot(index - 1);
         }
-        currentSlideNumber.innerText = numberTo0x(index);
-        highlightSliderDot(index-1);
     });
 
 };
