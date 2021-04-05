@@ -325,3 +325,70 @@ const sliderCarouselFunction = (slides) => {
     });
 };
 
+const calculatorResult = document.querySelector('.calculating__result').querySelector('span');
+const physicalActivity = [
+    1.2,
+    1.375,
+    1.55,
+    1.725,
+    1.9,
+];
+
+const updateCalculatorResult = () => {
+    let result;
+    const femaleGender = document.querySelector('#gender').firstElementChild;
+    let type;
+    let typeIndex = 0;
+    for (let activityType of document.querySelector('#physicalActivityType').children){
+        if (activityType.classList.contains('calculating__choose-item_active')){
+            type = typeIndex;
+            break;
+        }
+        typeIndex++;
+    }
+    let weight = document.querySelector('#weight').value.replace(/[^0-9]/g, '');
+    let height = document.querySelector('#height').value.replace(/[^0-9]/g, '');
+    let age = document.querySelector('#age').value.replace(/[^0-9]/g, '');
+    console.log(height, weight, age)
+    if (!(weight !== '' && height !== '' && age !== '' ))
+        return 0;
+    if (femaleGender.classList.contains('calculating__choose-item_active')){
+        result = (447.6 + (9.2 * weight) + (3.1 * height) - (4.3 * age)) * physicalActivity[type];
+    }else{
+        result = (88.36 + (13.4 * weight) + (4.8 * height) - (5.7 * age)) * physicalActivity[type];
+    }
+    if (!isNaN(result)){
+        return Math.round(result);
+    }
+    else
+        return 0;
+};
+
+let weight = document.querySelector('#weight');
+let height = document.querySelector('#height');
+let age = document.querySelector('#age');
+
+let parametersArray = [height, weight, age];
+parametersArray.forEach((parameter)=>{
+    parameter.addEventListener('input', ()=>{
+        parameter.value = parameter.value.replace(/[^0-9]/g, '');
+        calculatorResult.innerText = updateCalculatorResult();
+    });
+
+});
+
+const calculatorChooseItems = document.querySelectorAll('.calculating__choose-item');
+calculatorChooseItems.forEach((element) => {
+    if (element.id !== 'height' && element.id !== 'weight' && element.id !== 'age'){
+        element.addEventListener('click', ()=>{
+            for (let child of element.parentElement.children){
+                child.classList.remove('calculating__choose-item_active');
+            }
+            element.classList.add('calculating__choose-item_active');
+            calculatorResult.innerText = updateCalculatorResult();
+        });
+    }
+});
+
+
+
