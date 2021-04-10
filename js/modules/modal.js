@@ -21,7 +21,7 @@ function modal() {
     closeModal();
   });
 
-  contactUsBtns = document.querySelectorAll('.btn_contact_us');
+  const contactUsBtns = document.querySelectorAll('.btn_contact_us');
   contactUsBtns.forEach((element)=>{
     element.addEventListener('click', (event) => {
       openModal();
@@ -36,7 +36,7 @@ function modal() {
     }
   });
 
-  document.addEventListener('click',(event)=>{
+  document.addEventListener('click',(event) => {
     if (event.target.classList.contains('modal__close')){
       document.querySelector('#formCall').reset();
       const formCall = document.getElementById('formCall');
@@ -49,4 +49,4 @@ function modal() {
   });
 }
 
-module.exports = modal;
+export default modal;

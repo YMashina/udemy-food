@@ -17,4 +17,4 @@ function timer() {
   },1000);
 }
 
-module.exports = timer;
+export default timer;

@@ -45,4 +45,4 @@ function cards() {
     .catch(e => console.log(e));
 }
 
-module.exports = cards;
+export default cards;

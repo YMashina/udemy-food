@@ -96,4 +96,4 @@ function calculator() {
   });
 }
 
-module.exports = calculator;
+export default calculator;

@@ -1,6 +1,6 @@
 function tabs (){
-  tabItems = document.querySelectorAll('.tabheader__item');
-  tabContentItems = document.querySelectorAll('.tabcontent');
+  const tabItems = document.querySelectorAll('.tabheader__item');
+  const tabContentItems = document.querySelectorAll('.tabcontent');
   tabs = {
     fitnessTabheader : 'fitnessTabcontent',
     eliteTabheader: 'eliteTabcontent',
@@ -22,4 +22,4 @@ function tabs (){
   });
 }
 
-module.exports = tabs;
+export default tabs;
